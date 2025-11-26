@@ -1,25 +1,25 @@
 <?php
 include '../koneksi.php';
 
+$nim = $_GET['nim'];
+$query = "SELECT * FROM mahasiswa WHERE nim = '$nim'";
+$result = mysqli_query($koneksi, $query);
+$mahasiswa = mysqli_fetch_assoc($result);
+
+if (!$mahasiswa) {
+    header("Location: index.php?pesan=error&message=Data mahasiswa tidak ditemukan");
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nim = $_POST['nim'];
     $nama = $_POST['nama'];
     $prodi = $_POST['prodi'];
     $semester = $_POST['semester'];
     
-    // Cek apakah NIM sudah ada
-    $check_query = "SELECT * FROM mahasiswa WHERE nim = '$nim'";
-    $check_result = mysqli_query($koneksi, $check_query);
-    
-    if (mysqli_num_rows($check_result) > 0) {
-        header("Location: index.php?pesan=error&message=NIM sudah terdaftar");
-        exit();
-    }
-    
-    $query = "INSERT INTO mahasiswa (nim, nama, prodi, semester) VALUES ('$nim', '$nama', '$prodi', '$semester')";
+    $query = "UPDATE mahasiswa SET nama = '$nama', prodi = '$prodi', semester = '$semester' WHERE nim = '$nim'";
     
     if (mysqli_query($koneksi, $query)) {
-        header("Location: index.php?pesan=sukses&message=Data mahasiswa berhasil ditambahkan");
+        header("Location: index.php?pesan=sukses&message=Data mahasiswa berhasil diupdate");
         exit();
     } else {
         header("Location: index.php?pesan=error&message=Terjadi kesalahan: " . urlencode(mysqli_error($koneksi)));
@@ -32,13 +32,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Mahasiswa</title>
+    <title>Edit Mahasiswa</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Tambah Mahasiswa</h1>
+            <h1>Edit Mahasiswa</h1>
         </header>
         
         <nav>
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </nav>
         
         <main>
-            <h2>Form Tambah Mahasiswa</h2>
+            <h2>Form Edit Mahasiswa</h2>
             
             <?php
             if (isset($error)) {
@@ -62,26 +62,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <form method="POST" action="">
                 <div class="form-group">
                     <label for="nim">NIM</label>
-                    <input type="text" id="nim" name="nim" required>
+                    <input type="text" id="nim" name="nim" value="<?php echo $mahasiswa['nim']; ?>" readonly style="background-color: #f0f0f0;">
                 </div>
                 
                 <div class="form-group">
                     <label for="nama">Nama</label>
-                    <input type="text" id="nama" name="nama" required>
+                    <input type="text" id="nama" name="nama" value="<?php echo $mahasiswa['nama']; ?>" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="prodi">Program Studi</label>
-                    <input type="text" id="prodi" name="prodi">
+                    <input type="text" id="prodi" name="prodi" value="<?php echo $mahasiswa['prodi']; ?>">
                 </div>
                 
                 <div class="form-group">
                     <label for="semester">Semester</label>
-                    <input type="number" id="semester" name="semester" min="1" max="14">
+                    <input type="number" id="semester" name="semester" value="<?php echo $mahasiswa['semester']; ?>" min="1" max="14">
                 </div>
                 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-success">Simpan</button>
+                    <button type="submit" class="btn btn-success">Update</button>
                     <a href="index.php" class="btn">Batal</a>
                 </div>
             </form>

@@ -9,8 +9,7 @@ $database = "db_pendataan_nilai_mahasiswa";
 $koneksi = new mysqli($host, $user, $password, $database);
 
 // Cek koneksi
-if ($koneksi->connect_error) {
-    die("Koneksi gagal: " . $koneksi->connect_error);
+if (mysqli_connect_error()) {
+    die("Koneksi gagal: " . mysqli_connect_error());
 }
-// echo "Koneksi database berhasil!";
 ?>

@@ -24,7 +24,19 @@ include '../koneksi.php';
             </ul>
         </nav>
         
-        <main>
+        <main>        
+            <?php
+            if (isset($_GET['pesan'])) {
+                $pesan = $_GET['pesan'];
+                $message = isset($_GET['message']) ? $_GET['message'] : '';
+                
+                if ($pesan == 'sukses') {
+                    echo "<div class='alert alert-success'>$message</div>";
+                } elseif ($pesan == 'error') {
+                    echo "<div class='alert alert-error'>$message</div>";
+                }
+            }
+            ?>
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h2>Daftar Mahasiswa</h2>
                 <a href="tambah.php" class="btn btn-success">Tambah Mahasiswa</a>
@@ -65,7 +77,20 @@ include '../koneksi.php';
                 </tbody>
             </table>
         </main>
-        
+        <script>            
+            document.addEventListener('DOMContentLoaded', function() {
+                var alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function(alert) {
+                    setTimeout(function() {
+                        alert.style.transition = 'opacity 0.5s';
+                        alert.style.opacity = '0';
+                        setTimeout(function() {
+                            alert.remove();
+                        }, 500);
+                    }, 5000);
+                });
+            });
+        </script>
         <footer>
             <p>&copy; 2025 Aplikasi Pengelolaan Nilai Mahasiswa</p>
         </footer>
