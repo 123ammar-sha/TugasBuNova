@@ -37,9 +37,11 @@ include '../koneksi.php';
                 }
             }
             ?>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="action-bar">
                 <h2>Daftar Mahasiswa</h2>
-                <a href="tambah.php" class="btn btn-success">Tambah Mahasiswa</a>
+                <div class="action-bar-buttons">
+                    <a href="tambah.php" class="btn btn-success">+ Tambah Mahasiswa</a>
+                </div>
             </div>
             
             <table>
@@ -64,9 +66,11 @@ include '../koneksi.php';
                             echo "<td>" . $row['nama'] . "</td>";
                             echo "<td>" . $row['prodi'] . "</td>";
                             echo "<td>" . $row['semester'] . "</td>";
-                            echo "<td>";
-                            echo "<a href='edit.php?nim=" . $row['nim'] . "' class='btn'>Edit</a>";
-                            echo "<a href='hapus.php?nim=" . $row['nim'] . "' class='btn btn-danger' onclick='return confirm(\"Apakah Anda yakin ingin menghapus data ini?\")'>Hapus</a>";
+                            echo "<td class='action-cell'>";
+                            echo "<div class='btn-group'>";
+                            echo "<a href='edit.php?nim=" . $row['nim'] . "' class='btn btn-info'>✎ Edit</a>";
+                            echo "<a href='hapus.php?nim=" . $row['nim'] . "' class='btn btn-danger' onclick='return confirm(\"Apakah Anda yakin ingin menghapus data ini?\")'>🗑 Hapus</a>";
+                            echo "</div>";
                             echo "</td>";
                             echo "</tr>";
                         }
